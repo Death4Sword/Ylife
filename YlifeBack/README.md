@@ -1,17 +1,6 @@
 # Ylife
 Create application for Association
 
-
-# Package et dependance a installer 
-
-```
-npm install express mongoose body-parser
-```
-```
-npm install axios react-navigation react-navigation-stack
-```
-
-
 # Lancement de l'application en local
 
 Au tout début pour remettre en place les dépendances
@@ -58,7 +47,7 @@ et
 ```
 rm ~/.gradle
 ```
-Si pas possible de suppriumer reload vscode
+Si pas possible de supprimer reload vscode
 
 # Commande pour gradle et problème
 
@@ -76,3 +65,36 @@ Si pas possible de suppriumer reload vscode
 npx react-native doctor
 ```
 
+# Utilisation de prisma
+
+Dans le dossier prisma c'est le schema de la BDD
+Faire sa base de données puis lancer cette commande
+```
+npx prisma db pull
+```
+Cela récupère la base de données sous le format de prisma cela peu aider pour la mise en place et la récupération des données
+
+Ensuite des que la BDD à été récupèrer installer le client
+
+```
+npm install @prisma/client
+npx prisma generate
+```
+Cela permettra de générer le client pour faire les routes
+Ensuite faire les routes dans API_prisma.ts
+lancer en ligne de commande
+```
+npx ts-node API_prisma.ts
+```
+
+Evidemment il faudra faire en sorte au click que cela post dans la BDD pour que le compte ou un événement soit créer.
+
+# API Express
+
+Dans le dossier YlifeBack/srcserver.ts
+Il y a toute la partie API avec connexion à la base de données
+Pour lancer le serveur :
+```
+cd YlifeBack
+node src/server.ts
+```
