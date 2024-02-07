@@ -21,10 +21,8 @@ model Event {
 
 model Compte {
   idCompte      Int           @id @default(autoincrement())
-  login         String        @db.VarChar(255) @unique
   Filiere       String        @db.VarChar(100)
-  promo         String        @db.VarChar(20)
-  mail          String        @db.VarChar(255)
+  mail          String        @db.VarChar(255) @unique
   nom           String        @db.VarChar(255)
   prenom        String        @db.VarChar(255)
   Event         Event[]

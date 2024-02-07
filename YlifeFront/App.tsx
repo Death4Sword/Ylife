@@ -1,81 +1,51 @@
-// /**
-//  * Sample React Native App
-//  * https://github.com/facebook/react-native
-//  *
-//  * @format
-//  */
-// export default App;
-
-
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import React, { useState } from 'react';
-import RegisterScreen from './Screens/Register';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Button,
-} from 'react-native';
-
-const Stack = createStackNavigator();
-
+import React, {useState} from 'react';
+import axios from 'axios';
+import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
 function App(): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Ajouter la logique de connexion ici
-    console.log('Email:', email);
-    console.log('Password:', password);
-  };
-
-  const handleRegister = () => {
-    // Ajouter la logique de register
-    console.log('Register:');
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post('/api/signup', {
+        email: email,
+        password: password,
+      });
+      console.log('Response from server:', response.data);
+      // Vous pouvez ajouter d'autres logiques ici, comme la redirection vers une autre page après l'inscription réussie
+    } catch (error) {
+      console.error('Error registering:', error);
+      // Gérer les erreurs, par exemple afficher un message d'erreur à l'utilisateur
+    }
   };
 
   return (
-    // TODO: savoir pourquoi une ouverture de brackets doit être faite voir ligne du dessous
-    <><View style={styles.mainApp}>
-      <Text style={styles.sectionTitle}>Y'LIFE</Text>
-    </View><View style={styles.mainContainer}>
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your email"
-            onChangeText={text => setEmail(text)}
-            value={email} />
-        </View>
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password"
-            secureTextEntry
-            onChangeText={text => setPassword(text)}
-            value={password} />
-        </View>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen  name="Register" component={RegisterScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <Button title="Login" onPress={handleLogin} />
-        
-      </View></>
+    <View style={styles.mainContainer}>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Email</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your email"
+          onChangeText={text => setEmail(text)}
+          value={email}
+        />
+      </View>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          secureTextEntry
+          onChangeText={text => setPassword(text)}
+          value={password}
+        />
+      </View>
+      <Button title="Register" onPress={handleRegister} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  mainApp: {
-    // flex : 1,
-    paddingTop: 150,
-    justifyContent:  'center',
-    alignItems: 'center',
-  },
   mainContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -100,4 +70,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
