@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:admin@localhost:5432/db_ylife"
+}
+
+model Event {
+  idEvent        Int       @id
+  Title          String?   @db.VarChar(255)
+  description    String?   @db.VarChar(255)
+  dateDebut      DateTime? @db.Date
+  dateFin        DateTime? @db.Date
+  photo_video    String?   @db.VarChar(255)
+  nbrParticipant Int?
+  price          Int?
+  compte         compte    @relation(fields: [idEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
+}
+
+model compte {
+  idCompte      Int            @id
+  login         String?        @db.VarChar(255)
+  password      String?        @db.VarChar(255)
+  Filiere       String?        @db.VarChar(100)
+  promo         String?        @db.VarChar(20)
+  mail          String?        @db.VarChar(255)
+  nom           String?        @db.VarChar(255)
+  prenom        String?        @db.VarChar(255)
+  Event         Event?
+  createOfEvent createOfEvent?
+}
+
+model createOfEvent {
+  idCreateOfEvent Int     @id
+  TypeAsso        String  @db.VarChar(255)
+  YdaysName       String? @db.VarChar(255)
+  compte          compte  @relation(fields: [idCreateOfEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
+}
