@@ -1,21 +1,24 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
+
 function App(): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('/api/signup', {
-        email: email,
-        password: password,
-      });
-      console.log('Response from server:', response.data);
-      // Vous pouvez ajouter d'autres logiques ici, comme la redirection vers une autre page après l'inscription réussie
+      const response = await axios.get(`/mail/${email}`);
+      const emailExists = response.data.exists;
+      if (emailExists) {
+        console.log('Email already exists');
+        // Ajoutez ici la logique pour gérer le cas où l'email existe déjà
+      } else {
+        console.log('Email does not exist');
+        // Ajoutez ici la logique d'inscription si l'email n'existe pas
+      }
     } catch (error) {
-      console.error('Error registering:', error);
-      // Gérer les erreurs, par exemple afficher un message d'erreur à l'utilisateur
+      console.error('Error checking email:', error);
     }
   };
 
