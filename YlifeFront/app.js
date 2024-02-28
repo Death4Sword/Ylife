@@ -1,44 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 
 const App = () => {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
-    useEffect(() => {
-        const fetchEmail = async () => {
-            try{
-                const response = await fetch(`http://localhost:3000/users/mail/${email}`);
-                if (!response.ok)
-                {
-                    throw new Error('Error fetching email');
-                }
-                const data = await response.json();
-                console.log(data);
-                setEmail(data);
-            }catch (error){
-                console.error('Error fetching email:', error);
+    const handleRegisterPress = async () => {
+        // Vérifier si l'email est vide
+        if (!email.trim()) {
+            Alert.alert('Error', 'Please enter your email');
+            return;
+        }
+        try {
+            const response = await fetch(`http://10.0.2.2:3000/users/mail/${email}`);
+            if (!response.ok) {
+                throw new Error('Error fetching email');
             }
-        };
-        fetchEmail();
-    },[]);
-
-// function App() {
-//     const [email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-
-
-
-//     const checkEmailExists = async () => {
-//         try {
-//             const response = await fetch(`http://localhost:3000/users/mail/${email}`);
-//             console.log(response);
-//             const data = await response.json();
-//             console.log(data);
-//             console.log('Mon email existe');
-//         } catch (error) {
-//             console.error('Error fetching email:', error);
-//         }
-//     };
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching email:', error);
+            // Alert.alert('Error', 'Something went wrong, please try again');
+        }
+    };
 
     return (
         <View style={styles.mainContainer}>
@@ -61,7 +45,7 @@ const App = () => {
                     value={password}
                 />
             </View>
-            <Button title="Register" onPress={checkEmailExists} />
+            <Button title="Register" onPress={handleRegisterPress}/>
         </View>
     );
 };
