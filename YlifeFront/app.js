@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import "./src/css/App.css";
 
 const App = () => {
     const [email, setEmail] = React.useState('');
@@ -49,29 +50,5 @@ const App = () => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 24,
-    },
-    sectionContainer: {
-        marginBottom: 16,
-        width: '100%',
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-        marginBottom: 8,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        paddingHorizontal: 10,
-    },
-});
 
 export default App;
