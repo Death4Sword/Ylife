@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { checkEmailExists, getUser } from "../controllers/users.controller";
+import { getUser, checkEmailExists} from "../controllers/users.controller";
 
 const usersRouter = Router();
 
 usersRouter.get('/:id', getUser);
-usersRouter.get('/:email', checkEmailExists);
+usersRouter.get('/mail/:mail', checkEmailExists);
 
 export default usersRouter;

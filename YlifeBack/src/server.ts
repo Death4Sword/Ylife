@@ -1,14 +1,13 @@
 import express, { Request, Response } from 'express';
 import usersRouter from './routers/users.router';
-import emailRouter from './routers/email.router';
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
 
-app.use(express.json());
+app.use(cors());
 
 app.use('/users', usersRouter)
-app.use('/mail', emailRouter)
 
 // gestion des erreurs
 app.use((err: Error, req: Request, res: Response) => {
