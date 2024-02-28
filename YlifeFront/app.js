@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
-import "./src/css/App.css";
+import React from 'react';
+import { View, Text, TextInput, Button } from 'react-native';
+import style from "./src/css/AppCSS.js";
 
-const App = () => {
+const App = () => { 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
     const handleRegisterPress = async () => {
-        // Vérifier si l'email est vide
         if (!email.trim()) {
             Alert.alert('Error', 'Please enter your email');
             return;
@@ -21,25 +20,24 @@ const App = () => {
             console.log(data);
         } catch (error) {
             console.error('Error fetching email:', error);
-            // Alert.alert('Error', 'Something went wrong, please try again');
         }
     };
 
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Email</Text>
+        <View style={style.mainContainer}>
+            <View style={style.sectionContainer}>
+                <Text style={style.sectionTitle}>Email</Text>
                 <TextInput
-                    style={styles.input}
+                    style={style.input}
                     placeholder="Enter your email"
                     onChangeText={text => setEmail(text)}
                     value={email}
                 />
             </View>
-            <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Password</Text>
+            <View style={style.sectionContainer}>
+                <Text style={style.sectionTitle}>Password</Text>
                 <TextInput
-                    style={styles.input}
+                    style={style.input}
                     placeholder="Enter your password"
                     secureTextEntry
                     onChangeText={text => setPassword(text)}
