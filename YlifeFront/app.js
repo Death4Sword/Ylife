@@ -18,6 +18,7 @@ const App = () => {
             }
             const data = await response.json();
             console.log(data);
+            navigation.navigate()
         } catch (error) {
             console.error('Error fetching email:', error);
         }
