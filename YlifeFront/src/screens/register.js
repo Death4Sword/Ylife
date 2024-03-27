@@ -1,111 +1,131 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
-import "./src/css/app.css"
+import { View, Text, TextInput, Button } from 'react-native';
+// import { Dropdown } from 'react-native-material-dropdown-v2';
+import style from "../css/RegisterCSS"
+import { Dropdown } from 'react-native-material-dropdown-v2'
 
+const data = [
+  { value: 'Oui' },
+  { value: 'Non' },
+];
+const dataCreator = [
+  { value: 'BDE' },
+  { value: 'BDS' },
+  { value: 'BDD' },
+  { value: 'Pepyte' },
+  { value: 'Ydays' },
+];
 
 function App() {
-  const [Filiere, setFiliere] = useState('');
+  // Creation of student
+  const [filiere, setFiliere] = useState('');
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
   const [mail, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isEventCreator, setIsEventCreator] = useState(false);
+
+  // Selection of event creator
+  const [selectedCreatorType, setSelectedCreatorType] = useState('');
+
+  const handleEventCreatorSelection = (value) => {
+    setIsEventCreator(value === 'Oui');
+  };
 
   const handleRegister = async () => {
     try {
-      const response = await axios.get(`/mail/${mail}`);
-      const emailExists = response.data.exists;
-      if (emailExists) {
-        console.log('Email already exists');
-        // Add logic here to handle case when email already exists
-      } else {
-        console.log('Email does not exist');
-        // Add signup logic here if email does not exist
-      }
+      const response = await fetch(`http://10.0.2.2:3000/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          nom: nom, 
+          prenom: prenom, 
+          mail: mail,
+          password: password,
+          filiere: filiere,
+          selectedCreatorType: selectedCreatorType
+        }),
+    });
+    if (!response.ok) {
+      throw new Error('Network was not ok');
+    }
+    const data = await response.json();
+    console.log(data,"User registered succesfully!");
     } catch (error) {
       console.error('Error checking email:', error);
     }
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Nom</Text>
+    <View style={style.mainContainer}>
+      <View style={style.sectionContainer}>
+        <Text style={style.sectionTitle}>Nom</Text>
         <TextInput
-          style={styles.input}
+          style={style.input}
           placeholder='Entrer votre Nom'
           onChangeText={text => setNom(text)}
           value={nom}
         />
       </View>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Prenom</Text>
+      <View style={style.sectionContainer}>
+        <Text style={style.sectionTitle}>Prenom</Text>
         <TextInput
-          style={styles.input}
+          style={style.input}
           placeholder='Entrer votre Prenom'
           onChangeText={text => setPrenom(text)}
           value={prenom}
         />
       </View>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Filière</Text>
+      <View style={style.sectionContainer}>
+        <Text style={style.sectionTitle}>Filière</Text>
         <TextInput
-          style={styles.input}
+          style={style.input}
           placeholder='Entrer votre filière'
           onChangeText={text => setFiliere(text)}
-          value={Filiere}
+          value={filiere}
         />
       </View>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Email</Text>
+      <View style={style.sectionContainer}>
+        <Text style={style.sectionTitle}>Email</Text>
         <TextInput
-          style={styles.input}
+          style={style.input}
           placeholder="Enter your email"
           onChangeText={text => setEmail(text)}
           value={mail}
         />
       </View>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Password</Text>
+      <View style={style.sectionContainer}>
+        <Text style={style.sectionTitle}>Password</Text>
         <TextInput
-          style={styles.input}
+          style={style.input}
           placeholder="Enter your password"
           secureTextEntry
           onChangeText={text => setPassword(text)}
           value={password}
         />
       </View>
+      {/* choose if person is eventCreator */}
+      <View style={style.sectionContainer}>
+        <Text style={style.sectionTitle}>Etes-vous un créateur d'événement ?</Text>
+        <Dropdown
+          label='Oui/Non'
+          data={data}
+          onChangeText={handleEventCreatorSelection}
+        />
+        {isEventCreator && (
+            <Dropdown
+            label= 'Quel type de créateur êtes-vous?'
+            data={dataCreator}
+            typeAsso={selectedCreatorType}
+            onChangeText={(typeAsso) => setSelectedCreatorType(typeAsso)}
+          />
+        )}
+      </View>
       <Button title="Register" onPress={handleRegister} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    // Add any additional styles here
-  },
-  sectionContainer: {
-    marginBottom: 16,
-    width: '100%',
-    // Add any additional styles here
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    marginBottom: 8,
-    // Add any additional styles here
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    // Add any additional styles here
-  },
-});
 
 export default App;

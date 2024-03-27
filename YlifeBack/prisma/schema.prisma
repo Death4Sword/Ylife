@@ -25,16 +25,9 @@ model Compte {
   mail          String        @db.VarChar(255) @unique
   nom           String        @db.VarChar(255)
   prenom        String        @db.VarChar(255)
+  TypeAsso      String        @db.VarChar(255)
   Event         Event[]
-  createOfEvent CreateOfEvent?
   Password      Password?
-}
-
-model CreateOfEvent {
-  idCreateOfEvent Int     @id @default(autoincrement())
-  TypeAsso        String  @db.VarChar(255)
-  YdaysName       String? @db.VarChar(255)
-  compte          Compte  @relation(fields: [idCreateOfEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
 }
 
 model Password {

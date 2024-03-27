@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import style from "./src/css/AppCSS.js";
+import style from "./src/css/AppCSS";
 
 const App = () => { 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
-    const handleRegisterPress = async () => {
+    const handleLoginPress = async () => {
         if (!email.trim()) {
             Alert.alert('Error', 'Please enter your email');
             return;
         }
         try {
-            const response = await fetch(`http://10.0.2.2:3000/users/mail/${email}`);
+            const response = await fetch(`http://10.92.4.184/users/mail/${email}`);
             if (!response.ok) {
                 throw new Error('Error fetching email');
             }
@@ -45,7 +45,7 @@ const App = () => {
                     value={password}
                 />
             </View>
-            <Button title="Register" onPress={handleRegisterPress}/>
+            <Button title="Register" onPress={handleLoginPress}/>
         </View>
     );
 };
