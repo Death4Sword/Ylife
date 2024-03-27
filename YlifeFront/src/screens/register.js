@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-// import { Dropdown } from 'react-native-material-dropdown-v2';
 import style from "../css/RegisterCSS"
-import { Dropdown } from 'react-native-material-dropdown-v2'
+import RNPickerSelect from 'react-native-picker-select';
 
 const data = [
-  { value: 'Oui' },
-  { value: 'Non' },
+  { label: 'Oui', value: 'Oui' },
+  { label: 'Non', value: 'Non' },
 ];
 const dataCreator = [
-  { value: 'BDE' },
-  { value: 'BDS' },
-  { value: 'BDD' },
-  { value: 'Pepyte' },
-  { value: 'Ydays' },
+  { label: 'BDE', value: 'BDE' },
+  { label: 'BDS', value: 'BDS' },
+  { label: 'BDD', value: 'BDD' },
+  { label: 'Pepyte', value: 'Pepyte' },
+  { label: 'Ydays', value: 'Ydays' },
 ];
 
 function App() {
@@ -109,19 +108,17 @@ function App() {
       {/* choose if person is eventCreator */}
       <View style={style.sectionContainer}>
         <Text style={style.sectionTitle}>Etes-vous un créateur d'événement ?</Text>
-        <Dropdown
-          label='Oui/Non'
-          data={data}
-          onChangeText={handleEventCreatorSelection}
+        {/* TODO: Trouver un moyen de faire les combobox attention les data sont déjà prête */}
+        {/* <RNPickerSelect
+          items={data}
+          onValueChange={handleEventCreatorSelection}
         />
         {isEventCreator && (
-            <Dropdown
-            label= 'Quel type de créateur êtes-vous?'
-            data={dataCreator}
-            typeAsso={selectedCreatorType}
-            onChangeText={(typeAsso) => setSelectedCreatorType(typeAsso)}
+            <RNPickerSelect
+            items={dataCreator}
+            onValueChange={(value) => setSelectedCreatorType(value)}
           />
-        )}
+        )} */}
       </View>
       <Button title="Register" onPress={handleRegister} />
     </View>
