@@ -65,7 +65,7 @@ const App = () => {
                 </Text>
             </View>
             {/* {renderFiltersModal()} */}
-            <View style={style.listeEventContaien}>
+            <View style={style.listeEventContainer}>
                 <View style={style.sectionEventContainer} onPress={handlePress}>
                     <Text style={style.sectionDate}>15 mars 2023 {/*TODO value du back*/}
                         <Text style={style.sectionCreator}>icon BDE {/*TODO value du back*/}</Text>
