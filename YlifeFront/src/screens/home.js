@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { CheckBox } from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 import style from "../css/EventCSS";
 
 const dataFiltre = [
@@ -13,8 +14,12 @@ const dataFiltre = [
 ];
 
 const App = () => {
+    const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [filters, setFilters] = useState({ filter1: false, filter2: false });
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handlePress = () => {
         console.log("Event clicked");
@@ -28,31 +33,27 @@ const App = () => {
         console.log('Filtres appliqués :', filters);
         setModalVisible(false);
     };
-    // TODO: Implementer la fonctionnalité de filtre problème avec le modal a résoudre
-    // const renderFiltersModal = () => (
-    //     <Modal
-    //         animationType="slide"
-    //         transparent={true}
-    //         visible={modalVisible}
-    //         onRequestClose={() => setModalVisible(false)}>
-    //         <View style={style.modalView}>
-    //             <Text style={style.modalTitle}>Sélectionnez les filtres :</Text>
-    //             {dataFiltre.map((item, index) => (
-    //                 <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
-    //                     <CheckBox
-    //                         value={filters[item.value]}
-    //                         onValueChange={newValue => setFilters({ ...filters, [item.value]: newValue })}
-    //                         style={style.checkbox}
-    //                     />
-    //                     <Text style={style.checkboxLabel}>{item.label}</Text>
-    //                 </View>
-    //             ))}
-    //             <TouchableOpacity style={style.applyButton} onPress={handleApplyFilters}>
-    //                 <Text style={style.applyButtonText}>Appliquer</Text>
-    //             </TouchableOpacity>
-    //         </View>
-    //     </Modal>
-    // );
+
+  // Fonction pour déconnecter l'utilisateur
+  const handleLogout = () => {
+    // Ici, vous pouvez implémenter la logique de déconnexion, par exemple, réinitialiser les états d'email et de mot de passe
+    setEmail('');
+    setPassword('');
+    setError('');
+    // Rediriger l'utilisateur vers la page de connexion
+    navigation.navigate('Login'); // Redirection vers la page Login
+  };
+
+  // Définir le bouton de déconnexion dans l'en-tête de navigation
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity style={style.logoutButton} onPress={handleLogout}>
+          <Text style={style.buttonText}>Déconnexion</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
     return (
         <View style={style.mainContainer}>
@@ -62,9 +63,11 @@ const App = () => {
                         <Icon name="filter" size={20} color="black" />
                         <Text style={style.filterButtonText}>Filtre</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={style.logoutButton} onPress={handleLogout}>
+                        <Text style={style.logoutButtonText}>Déconnexion</Text>
+                    </TouchableOpacity>
                 </Text>
             </View>
-            {/* {renderFiltersModal()} */}
             <View style={style.listeEventContainer}>
                 <View style={style.sectionEventContainer} onPress={handlePress}>
                     <Text style={style.sectionDate}>15 mars 2023 {/*TODO value du back*/}

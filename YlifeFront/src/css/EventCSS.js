@@ -68,4 +68,13 @@ export default{
         color: 'white',
         fontWeight: 'bold',
     },
+    logoutButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginLeft: 10,
+    },
+    buttonText: {
+        color: '#007BFF',
+        fontSize: 16,
+      },
 };

@@ -1,53 +1,21 @@
 import React from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
-import style from "./src/css/AppCSS";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './src/screens/login';
+import HomeScreen from './src/screens/home';
 
-const App = () => { 
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+const Stack = createStackNavigator();
 
-    const handleLoginPress = async () => {
-        if (!email.trim()) {
-            Alert.alert('Error', 'Please enter your email');
-            return;
-        }
-        try {
-            const response = await fetch(`http://10.92.4.184/users/mail/${email}`);
-            if (!response.ok) {
-                throw new Error('Error fetching email');
-            }
-            const data = await response.json();
-            console.log(data);
-            navigation.navigate()
-        } catch (error) {
-            console.error('Error fetching email:', error);
-        }
-    };
-
-    return (
-        <View style={style.mainContainer}>
-            <View style={style.sectionContainer}>
-                <Text style={style.sectionTitle}>Email</Text>
-                <TextInput
-                    style={style.input}
-                    placeholder="Enter your email"
-                    onChangeText={text => setEmail(text)}
-                    value={email}
-                />
-            </View>
-            <View style={style.sectionContainer}>
-                <Text style={style.sectionTitle}>Password</Text>
-                <TextInput
-                    style={style.input}
-                    placeholder="Enter your password"
-                    secureTextEntry
-                    onChangeText={text => setPassword(text)}
-                    value={password}
-                />
-            </View>
-            <Button title="Register" onPress={handleLoginPress}/>
-        </View>
-    );
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        {/* Ajoutez d'autres écrans ici si nécessaire */}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default App;
