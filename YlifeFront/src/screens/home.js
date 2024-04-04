@@ -1,86 +1,117 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal } from "react-native";
-import { CheckBox } from '@react-native-community/checkbox';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import style from "../css/EventCSS";
 
-const dataFiltre = [
-    { label: 'BDE', value: 'BDE' },
-    { label: 'BDS', value: 'BDS' },
-    { label: 'BDD', value: 'BDD' },
-    { label: 'PEPYTE', value: 'PEPYTE' },
-    { label: 'Option avec Checkbox', value: 'optionCheckbox', checkBox: true },
-];
-
-const App = () => {
+const HomeScreen = () => {
     const navigation = useNavigation();
-    const [modalVisible, setModalVisible] = useState(false);
-    const [filters, setFilters] = useState({ filter1: false, filter2: false });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [events, setEvents] = useState([
+    {
+      id: 1,
+      date: '15 Mars 2023',
+      title: 'Soirée des diplômés',
+      description: 'En attendant le WED, le BDE invite à une soirée sur une péniche où nous nous occupons de tout !',
+      creator: 'BDE',
+    },
+    {
+      id: 2,
+      date: '16 Mars 2023',
+      title: 'LoL Ynov Cup',
+      description: 'Venez participer à la nouvelle édition de la LoL Ynov Cup. Un tournoi organisé par le BDS Esp...',
+      creator: 'BDS Esp...',
+    },
+    {
+      id: 3,
+      date: '23 Mars 2023',
+      title: 'Olympiades',
+      description: 'Participez à une journée sportive avec les olympiades !',
+      creator: 'BNS',
+    },
+  ]);
 
-    const handlePress = () => {
-        console.log("Event clicked");
-    };
-
-    const handleFilterPress = () => {
-        setModalVisible(true);
-    };
-
-    const handleApplyFilters = () => {
-        console.log('Filtres appliqués :', filters);
-        setModalVisible(false);
-    };
-
-  // Fonction pour déconnecter l'utilisateur
   const handleLogout = () => {
-    // Ici, vous pouvez implémenter la logique de déconnexion, par exemple, réinitialiser les états d'email et de mot de passe
     setEmail('');
     setPassword('');
     setError('');
-    // Rediriger l'utilisateur vers la page de connexion
-    navigation.navigate('Login'); // Redirection vers la page Login
+    navigation.navigate('Login');
   };
 
-  // Définir le bouton de déconnexion dans l'en-tête de navigation
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <TouchableOpacity style={style.logoutButton} onPress={handleLogout}>
-          <Text style={style.buttonText}>Déconnexion</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Déconnexion</Text>
         </TouchableOpacity>
       ),
     });
   }, [navigation]);
 
-    return (
-        <View style={style.mainContainer}>
-            <View style={style.sectionHomeContainer}>
-                <Text style={style.sectionTitle}>Accueil
-                    <TouchableOpacity style={style.filterButton} onPress={handleFilterPress}>
-                        <Icon name="filter" size={20} color="black" />
-                        <Text style={style.filterButtonText}>Filtre</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={style.logoutButton} onPress={handleLogout}>
-                        <Text style={style.logoutButtonText}>Déconnexion</Text>
-                    </TouchableOpacity>
-                </Text>
-            </View>
-            <View style={style.listeEventContainer}>
-                <View style={style.sectionEventContainer} onPress={handlePress}>
-                    <Text style={style.sectionDate}>15 mars 2023 {/*TODO value du back*/}
-                        <Text style={style.sectionCreator}>icon BDE {/*TODO value du back*/}</Text>
-                        <Icon name="share" size={20} color="black" />
-                        <Icon name="heart" size={20} color="black" />
-                    </Text>
-                    <Text style={style.sectionTitleEvent}>Soirée des Diplômés {/*TODO value du back*/}</Text>
-                    <Text style={style.sectiondescriptionEvent}>Soirée des Diplômés venez avant le WED... {/*TODO value du back + mettre 3 petits points si ça dépasse 2 lignes*/}</Text>
-                </View>
-            </View>
-        </View>
-    );
+  const navigateToEventDetail = (eventId) => {
+    navigation.navigate('event', { eventId });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Accueil</Text>
+      <View style={styles.eventContainer}>
+        {events.map((event) => (
+          <TouchableOpacity
+            key={event.id}
+            style={styles.eventCard}
+            onPress={() => navigateToEventDetail(event.id)}>
+            <Text style={styles.eventDate}>{event.date}</Text>
+            <Text style={styles.eventTitle}>{event.title}</Text>
+            <Text style={styles.eventCreator}>Créateur: {event.creator}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
 };
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  eventContainer: {
+    flex: 1,
+  },
+  eventCard: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 15,
+  },
+  eventDate: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  eventTitle: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  eventCreator: {
+    fontSize: 14,
+    fontStyle: 'italic',
+  },
+  logoutButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginLeft: 10,
+},
+buttonText: {
+    color: '#007BFF',
+    fontSize: 16,
+  },
+});
+
+export default HomeScreen;
