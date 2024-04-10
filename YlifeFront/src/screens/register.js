@@ -22,6 +22,7 @@ function RegisterScreen() {
   const [prenom, setPrenom] = useState('');
   const [mail, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [typeAsso, setTypeAsso] = useState('');
   const [isEventCreator, setIsEventCreator] = useState(false);
 
   // Selection of event creator
@@ -33,7 +34,8 @@ function RegisterScreen() {
 
   const handleRegister = async () => {
     try {
-      const response = await fetch(`http://10.0.2.2:3000/register`, {
+      const query = `Filiere={$filiere}&Mail={$mail}&Nom={$nom}&Prenom={$prenom}&Password={$password}&TypeAsso={$typeAsso}`
+      const response = await fetch(`http://10.0.2.2:3000/users/register/${query}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +46,7 @@ function RegisterScreen() {
           mail: mail,
           password: password,
           filiere: filiere,
-          selectedCreatorType: selectedCreatorType
+        // isEventCreator: isEventCreator,
         }),
     });
     if (!response.ok) {

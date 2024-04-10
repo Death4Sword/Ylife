@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import usersRouter from './routers/users.router';
+import eventsRouter from './routers/event.routers';
 import cors from 'cors';
 
 const app = express();
@@ -8,6 +9,7 @@ const port = 3000;
 app.use(cors());
 
 app.use('/users', usersRouter)
+app.use('/events', eventsRouter)
 
 // gestion des erreurs
 app.use((err: Error, req: Request, res: Response) => {

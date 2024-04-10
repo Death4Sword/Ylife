@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Importer useNavigation
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
-  const navigation = useNavigation(); // Initialiser la navigation
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   // Fonction pour gérer la connexion
-  const handleLogin = () => {
-    // Vérifier si l'utilisateur existe dans la base de données
-    // Comparer le mot de passe fourni avec celui stocké en base de données
-    // Gérer les cas de succès ou d'échec de connexion
-    // Ceci est juste un exemple simplifié
-    if (email === 'exemple@mail.com' && password === 'motdepasse') {
-      // Connexion réussie, rediriger vers la page d'accueil
-      navigation.navigate('Home'); // Redirection vers la page Home
-    } else {
-      setError('Email ou mot de passe incorrect');
-    }
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`http://10.0.2.2:3000/users/mail/${email}/${password}`);
+      const data = await response.json();
+      if (data.exists) {
+        // Connexion réussie
+        navigation.navigate('Home');
+      } else {
+        setError('Email ou mot de passe incorrect');
+      }
+    } catch (error) {
+    console.error('Error checking Email and password', error);
+    setError('Erreur interne');
+}
   };
 
   const handleRegister = () => {
