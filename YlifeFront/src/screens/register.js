@@ -15,7 +15,7 @@ const dataCreator = [
   { label: 'Ydays', value: 'Ydays' },
 ];
 
-function App() {
+function RegisterScreen() {
   // Creation of student
   const [filiere, setFiliere] = useState('');
   const [nom, setNom] = useState('');
@@ -125,4 +125,4 @@ function App() {
   );
 }
 
-export default App;
+export default RegisterScreen;

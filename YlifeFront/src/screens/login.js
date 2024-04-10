@@ -22,6 +22,10 @@ const LoginScreen = () => {
     }
   };
 
+  const handleRegister = () => {
+    navigation.navigate('Register'); // Redirection vers la page register
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Connexion</Text>
@@ -46,7 +50,7 @@ const LoginScreen = () => {
       <TouchableOpacity>
         <Text style={styles.forgotPassword}>Mot de passe oublié</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleRegister}>
         <Text style={styles.createAccount}>Créer un compte</Text>
       </TouchableOpacity>
       {error ? <Text style={styles.error}>{error}</Text> : null}
