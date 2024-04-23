@@ -1,24 +1,27 @@
 // export default Event;
 import React from "react";
-import { View, Text, Button, Image } from "react-native";
-import navBar from "./navBar";
-import topBar from "./topBar";
+import { View, Text, Button } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import style from "../css/viewEventCSS";
 
-const handleReturn = () => {
-    // TODO: Faire en sorte que le bouton retour fonctionne
-    console.log("Return to the previous page");
-};
+const Event = () => {
+    const navigation = useNavigation();
 
-const handleParticipate = () => {
-    console.log("Participate to the event");
-}
+    const handleReturn = () => {
+        navigation.navigate("Home");
+    };
+    
+    const handleParticipate = () => {
+        console.log("Participate to the event");
+    }
 
-function Event() {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+          headerLeft: null
+        });
+      }, [navigation]);
+
     return (
         <View style={style.mainEventContainer}>
             <View style={style.sectionTopEventContainer}>

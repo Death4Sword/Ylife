@@ -1,13 +1,9 @@
 import { RequestHandler } from "express";
 import prisma from "../services/prisma.service";
 
-export const getEvent: RequestHandler = async(req, res) => {
+export const getAllEvent: RequestHandler = async(req, res) => {
     const result = 
-    await prisma.event.findUnique({
-        where: {
-            idEvent: Number(req.params.id)
-        }
-    });
+    await prisma.event.findMany();
     if (!result) {
         res.status(404).send('Evenement non trouvé');
     } else {

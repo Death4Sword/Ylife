@@ -14,6 +14,15 @@ const HomeScreen = () => {
     const [error, setError] = useState('');
     const [filter, setFilter] = useState('all');
     const [events, setEvents] = useState([
+
+    // const handleAllEvents = async () => {
+    //   try{
+    //     const response = await fetch(`http://10.0.2.2:3000/events/)`);
+    //     const data = await response.json();
+    //   } catch (error) {
+    //     console.error('Error fetching events', error);
+    //   }
+    // }
     {
       id: 1,
       date: '15 Mars 2023',
@@ -80,7 +89,7 @@ const HomeScreen = () => {
           <Picker.Item label="Ynov" value="Ynov" />
         </Picker>
       </View>
-      <View style={styles.eventContainer}>
+      <View style={styles.eventContainer} handleAllEvents>
         {events
         .filter((event) => filter === 'all' || event.creator.includes(filter))
         .map((event) => (
@@ -97,7 +106,6 @@ const HomeScreen = () => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
