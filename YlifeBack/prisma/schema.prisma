@@ -9,29 +9,39 @@ datasource db {
 
 model Event {
   idEvent        Int      @id @default(autoincrement())
-  Title          String   @db.VarChar(255)
+  title          String   @db.VarChar(255)
   description    String   @db.VarChar(255)
-  dateDebut      DateTime @db.Date
-  dateFin        DateTime @db.Date
+  dateEvent      DateTime @db.Date
   photo_video    String   @db.VarChar(255)
+  lieux          String   @db.VarChar(255)
+  tags           String   @db.VarChar(255)
   nbrParticipant Int
   price          Int
-  compte         Compte    @relation(fields: [idEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
+  lienPriceURL   String   @db.VarChar(255)
+  compte         Compte  @relation(fields: [idEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
 }
 
 model Compte {
   idCompte      Int           @id @default(autoincrement())
-  Filiere       String        @db.VarChar(100)
-  mail          String        @db.VarChar(255) @unique
+  filiere       String        @db.VarChar(100)
+  mail          String        @db.VarChar(255)
   nom           String        @db.VarChar(255)
   prenom        String        @db.VarChar(255)
-  TypeAsso      String        @db.VarChar(255)
-  Event         Event[]
-  Password      Password?
+  typeAsso      String        @db.VarChar(255)
+  event         Event[]
+  password      Password?
+  creatorEvent  CreatorEvent[]
 }
 
 model Password {
   idPassword Int    @id @default(autoincrement())
-  password   String @db.VarChar(255) @unique
+  password   String @db.VarChar(255)
   compte     Compte @relation(fields: [idPassword], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
+}
+
+model CreatorEvent {
+  idCreatorEvent Int    @id @default(autoincrement())
+  color          String @db.VarChar(255)
+  logo           String @db.VarChar(255)
+  Compte         Compte @relation(fields: [idCreatorEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
 }

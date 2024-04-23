@@ -22,7 +22,7 @@ export const checkEmailExists: RequestHandler = async (req, res) => {
         const compte = await prisma.compte.findFirst({
             where: {
                 mail: String(mail),
-                Password: {
+                password: {
                     password: String(password)
                 }
             }
@@ -39,25 +39,24 @@ export const checkEmailExists: RequestHandler = async (req, res) => {
 };
 
 export const postRegister: RequestHandler = async (req, res) => {
-    const { filiere, mail, nom, prenom, password, typeAsso, isCreatorEvent} = req.query;
+    const { filiere, mail, nom, prenom, password, typeAsso} = req.body;
     try {
         const result = await prisma.compte.create({
             data: {
-                Filiere: String(filiere),
+                filiere: String(filiere),
                 mail: String(mail),
                 nom: String(nom),
                 prenom: String(prenom),
-                Password: {
+                password: {
                     create: {
                         password: String(password)
                     }
                 },
-                TypeAsso: String(typeAsso),
-                isCreatorEvent: Boolean(isCreatorEvent)
+                typeAsso: String(typeAsso),
             }
         });
-        res.json(result);
-        res.status(201).json('Utilisateur enregistré avec succès');
+        // res.status(201).json(result);
+        res.send(result);
     } catch (error) {
         console.error('Error registering user ', error);
         res.status(500).send('Erreur interne');

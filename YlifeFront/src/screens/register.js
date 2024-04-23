@@ -1,41 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
-import style from "../css/RegisterCSS"
-import RNPickerSelect from 'react-native-picker-select';
-
-const data = [
-  { label: 'Oui', value: 'Oui' },
-  { label: 'Non', value: 'Non' },
-];
-const dataCreator = [
-  { label: 'BDE', value: 'BDE' },
-  { label: 'BDS', value: 'BDS' },
-  { label: 'BDD', value: 'BDD' },
-  { label: 'Pepyte', value: 'Pepyte' },
-  { label: 'Ydays', value: 'Ydays' },
-];
+import { ScrollView, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 
 function RegisterScreen() {
   // Creation of student
+  const navigation = useNavigation();
   const [filiere, setFiliere] = useState('');
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
   const [mail, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [typeAsso, setTypeAsso] = useState('');
-  const [isEventCreator, setIsEventCreator] = useState(false);
-
-  // Selection of event creator
-  const [selectedCreatorType, setSelectedCreatorType] = useState('');
-
-  const handleEventCreatorSelection = (value) => {
-    setIsEventCreator(value === 'Oui');
-  };
+  const [typeAsso, setTypeAsso] = useState('Etudiant');
+  const [isEventCreator, setIsEventCreator] = useState('Non');
 
   const handleRegister = async () => {
     try {
-      const query = `Filiere={$filiere}&Mail={$mail}&Nom={$nom}&Prenom={$prenom}&Password={$password}&TypeAsso={$typeAsso}`
-      const response = await fetch(`http://10.0.2.2:3000/users/register/${query}`, {
+      const response = await fetch(`http://10.0.2.2:3000/users/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,85 +27,134 @@ function RegisterScreen() {
           mail: mail,
           password: password,
           filiere: filiere,
-        // isEventCreator: isEventCreator,
+          typeAsso: typeAsso,
         }),
     });
     if (!response.ok) {
       throw new Error('Network was not ok');
     }
     const data = await response.json();
+    navigation.navigate('Login');
     console.log(data,"User registered succesfully!");
     } catch (error) {
-      console.error('Error checking email:', error);
+      console.error('Error checking data:', error, data);
     }
   };
 
   return (
-    <View style={style.mainContainer}>
-      <View style={style.sectionContainer}>
-        <Text style={style.sectionTitle}>Nom</Text>
+    <ScrollView contentContainerStyle={styles.mainContainer}>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Nom</Text>
         <TextInput
-          style={style.input}
+          style={styles.input}
           placeholder='Entrer votre Nom'
           onChangeText={text => setNom(text)}
           value={nom}
         />
       </View>
-      <View style={style.sectionContainer}>
-        <Text style={style.sectionTitle}>Prenom</Text>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Prenom</Text>
         <TextInput
-          style={style.input}
+          style={styles.input}
           placeholder='Entrer votre Prenom'
           onChangeText={text => setPrenom(text)}
           value={prenom}
         />
       </View>
-      <View style={style.sectionContainer}>
-        <Text style={style.sectionTitle}>Filière</Text>
-        <TextInput
-          style={style.input}
-          placeholder='Entrer votre filière'
-          onChangeText={text => setFiliere(text)}
-          value={filiere}
-        />
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Filière</Text>
+        <Picker
+          style={styles.filterIsEventCreator}
+          selectedValue={filiere}
+          onValueChange={(value) => setFiliere(value)}
+        >
+          <Picker.Item label="B1" value="B1" />
+          <Picker.Item label="B2" value="B2" />
+          <Picker.Item label="B3" value="B3" />
+          <Picker.Item label="M1" value="M1" />
+          <Picker.Item label="M2" value="M2" />
+        </Picker>
       </View>
-      <View style={style.sectionContainer}>
-        <Text style={style.sectionTitle}>Email</Text>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Email</Text>
         <TextInput
-          style={style.input}
+          style={styles.input}
           placeholder="Enter your email"
           onChangeText={text => setEmail(text)}
           value={mail}
         />
       </View>
-      <View style={style.sectionContainer}>
-        <Text style={style.sectionTitle}>Password</Text>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Password</Text>
         <TextInput
-          style={style.input}
+          style={styles.input}
           placeholder="Enter your password"
           secureTextEntry
           onChangeText={text => setPassword(text)}
           value={password}
         />
       </View>
-      {/* choose if person is eventCreator */}
-      <View style={style.sectionContainer}>
-        <Text style={style.sectionTitle}>Etes-vous un créateur d'événement ?</Text>
-        {/* TODO: Trouver un moyen de faire les combobox attention les data sont déjà prête */}
-        {/* <RNPickerSelect
-          items={data}
-          onValueChange={handleEventCreatorSelection}
-        />
-        {isEventCreator && (
-            <RNPickerSelect
-            items={dataCreator}
-            onValueChange={(value) => setSelectedCreatorType(value)}
-          />
-        )} */}
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Etes-vous un créateur d'événement ?</Text>
+        <Picker
+          style={styles.filterIsEventCreator}
+          selectedValue={isEventCreator}
+          onValueChange={(value) => setIsEventCreator(value)}
+        >
+          <Picker.Item label="Non" value="Non" />
+          <Picker.Item label="Oui" value="Oui" />
+        </Picker>
+        {isEventCreator === 'Oui' && (
+          <Picker
+            style={styles.filterIsEventCreator}
+            selectedValue={typeAsso}
+            onValueChange={(value) => setTypeAsso(value)}
+          >
+            <Picker.Item label="Etudiant" value="Etudiant" />
+            <Picker.Item label="BDE" value="BDE" />
+            <Picker.Item label="BDS" value="BDS" />
+            <Picker.Item label="BDD" value="BDD" />
+            <Picker.Item label="Pepyte" value="Pepyte" />
+            <Picker.Item label="Ydays" value="Ydays" />
+          </Picker>
+        )}
       </View>
       <Button title="Register" onPress={handleRegister} />
-    </View>
+    </ScrollView>
   );
 }
 
 export default RegisterScreen;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 24,
+  },
+  sectionContainer: {
+      marginBottom: 16,
+      width: '100%',
+  },
+  sectionTitle: {
+      fontSize: 24,
+      fontWeight: '600',
+      marginBottom: 8,
+  },
+  input: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      paddingHorizontal: 10,
+  },
+  filterIsEventCreator: {
+    height: 40,
+    width: 120,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#007BFF',
+  },
+});

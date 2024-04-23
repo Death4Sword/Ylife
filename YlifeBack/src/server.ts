@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import usersRouter from './routers/users.router';
 import eventsRouter from './routers/event.routers';
 import cors from 'cors';
@@ -7,12 +7,13 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(express.json());
 
 app.use('/users', usersRouter)
 app.use('/events', eventsRouter)
 
 // gestion des erreurs
-app.use((err: Error, req: Request, res: Response) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);
     res.status(500).send('Quelque chose s\'est mal passé !');
 });
