@@ -8,6 +8,7 @@ import RegisterScreen from './src/screens/register';
 import ViewEvent from './src/screens/viewEvent';
 import SpaceStudent from './src/screens/spaceStudent';
 import SpaceCreator from './src/screens/spaceCreator';
+import CreateEvent from './src/screens/createEvent';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,8 @@ const App = () => {
         <Stack.Screen name="viewEvent" component={ViewEvent} />
         <Stack.Screen name="spaceStudent" component={SpaceStudent} />
         <Stack.Screen name="spaceCreator" component={SpaceCreator} />
+        <Stack.Screen name="createEvent" component={CreateEvent} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

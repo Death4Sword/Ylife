@@ -53,7 +53,7 @@ const ViewEvent = () => {
     };
 
     const handleCreateEvent = () => {
-        navigation.navigate('CreateEvent');
+        navigation.navigate('createEvent');
     };
     
     return (

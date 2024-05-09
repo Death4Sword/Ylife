@@ -49,7 +49,6 @@ const EventDetailScreen = ({ route, navigation }) => {
                 <Text style={styles.eventPrice}>{price}</Text>
                 <Text style={styles.eventContact}>{contact}</Text>
                 <Text style={styles.eventDescription}>{description}</Text>
-
                 {/* Affichage des tags */}
                 <View style={styles.tagsContainer}>
                     {tags.map((tag, index) => (
