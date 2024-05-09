@@ -17,6 +17,7 @@ const EventDetailScreen = ({ route, navigation }) => {
         'https://picsum.photos/200/300',
         'https://picsum.photos/200/300',
     ];
+    const creator = 'BDE';
 
   // Fonction pour rediriger vers la page d'inscription
   const handleInscription = () => {

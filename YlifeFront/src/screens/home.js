@@ -88,6 +88,18 @@ const HomeScreen = () => {
     navigation.navigate('event', { eventId });
   };
 
+  const handleViewEvent = () => {
+    navigation.navigate('viewEvent');
+  };
+
+  const handleHome = () => {
+    navigation.navigate('Home');
+  };
+
+  const handleProfile = () => {
+    navigation.navigate('Profile');
+  };
+
   return (
     <View style={styles.containerViewEvent}>
       <ScrollView contentContainerStyle={styles.eventContainer}>
@@ -127,16 +139,16 @@ const HomeScreen = () => {
       </View>
     </ScrollView>
       <View style={styles.bottomNavBar}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleHome}>
           <Icon name="home" size={30} color="black" />
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon name="calendar" size={30} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleViewEvent}>
           <Icon name="heart" size={30} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleProfile}>
           <Icon name="user" size={30} color="black" />
         </TouchableOpacity>
       </View>
