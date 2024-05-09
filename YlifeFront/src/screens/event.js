@@ -1,52 +1,155 @@
-// export default Event;
-import React from "react";
-import { View, Text, Button } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
-import style from "../css/viewEventCSS";
+import React from 'react';
+import { View, Text, StyleSheet, ImageBackground, ScrollView, TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Event = () => {
-    const navigation = useNavigation();
+const EventDetailScreen = ({ route, navigation }) => {
+  // Récupérer les informations de l'événement depuis la route
+    const title = 'Soirée des diplômés';
+    const date = '15 Mars 2023';
+    const time = '20h00';
+    const location = 'Péniche Le Marcounet, Paris';
+    const price = 'Gratuit';
+    const contact = 'gregory@gmail.com';
+    const description = 'En attendant le WED, le BDE invite à une soirée sur une péniche où nous nous occupons de tout !';
+    const tags = ['Soirée', 'BDE', 'Péniche', 'Gratuit'];
+    const photos = [
+        'https://picsum.photos/200/300',
+        'https://picsum.photos/200/300',
+        'https://picsum.photos/200/300',
+    ];
 
-    const handleReturn = () => {
-        navigation.navigate("Home");
-    };
-    
-    const handleParticipate = () => {
-        console.log("Participate to the event");
-    }
+  // Fonction pour rediriger vers la page d'inscription
+  const handleInscription = () => {
+    // Ajoutez votre code pour naviguer vers la page d'inscription
+    console.log('Inscription à l\'événement');
+  };
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-          headerLeft: null
-        });
-      }, [navigation]);
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: null
+    });
+  }, [navigation]);
 
-    return (
-        <View style={style.mainEventContainer}>
-            <View style={style.sectionTopEventContainer}>
-                <Button title="Retour" onPress={handleReturn}/>
-                <Icon name="share" size={30} color="black"/>
-                <Icon name="heart" size={30} color="black"/>
-                <View style={style.sectionTitleEventContainer}>
-                    <Text style={style.sectionTitleEvent}>Soirée des diplômés</Text>
-                    <Text style={style.sectionTitledate}>15 Mars 2023 - 20h00</Text>
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        {/* Image de fond */}
+        <ImageBackground source={{ uri: photos[0] }} style={styles.backgroundImage}>
+          {/* En-tête de la page */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="chevron-left" size={30} color="#007BFF" />
+            </TouchableOpacity>
+            <Text style={styles.title}>{title}</Text>
+            {/* Contenu de l'événement */}
+            <View style={styles.eventInfo}>
+                <Text style={styles.eventDate}>{date} - {time}</Text>
+                <Text style={styles.eventLocation}>{location}</Text>
+                <Text style={styles.eventPrice}>{price}</Text>
+                <Text style={styles.eventContact}>{contact}</Text>
+                <Text style={styles.eventDescription}>{description}</Text>
+
+                {/* Affichage des tags */}
+                <View style={styles.tagsContainer}>
+                    {tags.map((tag, index) => (
+                        <Text key={index} style={styles.tag}>{tag}</Text>
+                    ))}
                 </View>
-                <View style={style.sectionDivider} />
-                <Text style={style.sectionTitleLieu}>Lieu</Text>
-                <Text style={style.sectionLieu}>Paris 1er arrondissement</Text>
-                <Text style={style.sectionTitleTarif}>Tarif</Text>
-                <Text style={style.sectionTarif}>Gratuit</Text>
-                <Text style={style.sectionTitleContact}>Contact</Text>
-                <Text style={style.sectionContact}>bds.paris@ynov.com</Text>
             </View>
-            <View style={style.sectionAPropos}>
-                <Text style={style.sectionTitleAPropos}>A propos de l'événement</Text>
-                <Text style={style.sectionDescription}>Venez fêter la fin de vos études avec nous lors de la soirée des diplômés !</Text>
-            </View>
-            <Button title="+ S'inscrire" onPress={handleParticipate}/>
-        </View>
-    );
-}
+            <TouchableOpacity>
+              <Icon name="share" size={30} color="#007BFF" />
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
 
-export default Event;
+        <View style={styles.photosContainer}>
+          {photos.map((photo, index) => (
+            <Image key={index} source={{ uri: photo }} style={styles.photo} />
+          ))}
+        </View>
+
+        {/* Bouton d'inscription */}
+        <TouchableOpacity style={styles.registerButton} onPress={handleInscription}>
+          <Text style={styles.buttonText}>Inscription</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  backgroundImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  eventInfo: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  eventDate: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  eventLocation: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  eventPrice: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  eventContact: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  eventDescription: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 20,
+  },
+  tag: {
+    backgroundColor: '#007BFF',
+    color: '#fff',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  registerButton: {
+    backgroundColor: '#007BFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+});
+
+export default EventDetailScreen;

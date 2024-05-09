@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { ScrollView } from "react-native-gesture-handler";
 
 // import header from './header';
 
@@ -44,6 +44,27 @@ const HomeScreen = () => {
       description: 'Participez à une journée sportive avec les olympiades !',
       creator: 'BDS',
     },
+    {
+      id: 4,
+      date: '15 Mars 2023',
+      title: 'Soirée des diplômés',
+      description: 'En attendant le WED, le BDE invite à une soirée sur une péniche où nous nous occupons de tout !',
+      creator: 'BDE',
+    },
+    {
+      id: 5,
+      date: '16 Mars 2023',
+      title: 'LoL Ynov Cup',
+      description: 'Venez participer à la nouvelle édition de la LoL Ynov Cup. Un tournoi organisé par le BDS Esp...',
+      creator: 'BDS',
+    },
+    {
+      id: 6,
+      date: '23 Mars 2023',
+      title: 'Olympiades',
+      description: 'Participez à une journée sportive avec les olympiades !',
+      creator: 'BDS',
+    },
   ]);
 
   const handleLogout = () => {
@@ -68,27 +89,28 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Accueil</Text>
-      <View style={styles.filterContainer}>
-        <Icon name="filter" size={20} color="#007BFF" style={styles.filterIcon} />  
-        <Text style={styles.filterLabel}>Filtre</Text>
-        <Picker
-          style={styles.filterPicker}
-          selectedValue={filter}
-          onValueChange={(value) => setFilter(value)}
-        >
-          <Picker.Item label="Tous" value="all" />
-          <Picker.Item label="Alumni" value="Alumni" />
-          <Picker.Item label="BDD" value="BDD" />
-          <Picker.Item label="BDE" value="BDE" />
-          <Picker.Item label="BDJ" value="BDJ" />
-          <Picker.Item label="BDS" value="BDS" />
-          <Picker.Item label="Labo Ydays" value="Labo Ydays" />
-          <Picker.Item label="Pepytes" value="Pepytes" />
-          <Picker.Item label="Ynov" value="Ynov" />
-        </Picker>
-      </View>
+    <View style={styles.containerViewEvent}>
+      <ScrollView contentContainerStyle={styles.eventContainer}>
+        <Text style={styles.heading}>Accueil</Text>
+        <View style={styles.filterContainer}>
+          <Icon name="filter" size={20} color="#007BFF" style={styles.filterIcon} />  
+          <Text style={styles.filterLabel}>Filtre</Text>
+          <Picker
+            style={styles.filterPicker}
+            selectedValue={filter}
+            onValueChange={(value) => setFilter(value)}
+          >
+            <Picker.Item label="Tous" value="all" />
+            <Picker.Item label="Alumni" value="Alumni" />
+            <Picker.Item label="BDD" value="BDD" />
+            <Picker.Item label="BDE" value="BDE" />
+            <Picker.Item label="BDJ" value="BDJ" />
+            <Picker.Item label="BDS" value="BDS" />
+            <Picker.Item label="Labo Ydays" value="Labo Ydays" />
+            <Picker.Item label="Pepytes" value="Pepytes" />
+            <Picker.Item label="Ynov" value="Ynov" />
+          </Picker>
+        </View>
       <View style={styles.eventContainer} handleAllEvents>
         {events
         .filter((event) => filter === 'all' || event.creator.includes(filter))
@@ -103,14 +125,29 @@ const HomeScreen = () => {
           </TouchableOpacity>
         ))}
       </View>
+    </ScrollView>
+      <View style={styles.bottomNavBar}>
+        <TouchableOpacity>
+          <Icon name="home" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="calendar" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="heart" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="user" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containerViewEvent: {
     flex: 1,
-    padding: 20,
+    
     backgroundColor: '#fff',
   },
   heading: {
@@ -119,7 +156,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   eventContainer: {
-    flex: 1,
+    padding: 10,
+    flexGrow: 1,
   },
   eventCard: {
     backgroundColor: '#F5F5F5',
@@ -173,6 +211,14 @@ const styles = StyleSheet.create({
   },
   filterIcon: {
     marginRight: 10,
+  },
+
+  bottomNavBar: {
+    height: 60, // ajustez la hauteur selon vos besoins
+    backgroundColor: 'lightblue', // couleur de fond de la barre de navigation
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 });
 
