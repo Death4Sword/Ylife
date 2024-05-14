@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
 
 const ViewEvent = () => {
+    // TODO: Récupérer les événements depuis l'API et faire le back
+    // TODO: Faie le front
     const navigation = useNavigation();
     const creator = 'BDE';
     const [events, setEvents] = useState([

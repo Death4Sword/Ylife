@@ -6,6 +6,7 @@ import Picker from "react-native-picker-select";
 
 
 const CreateEvent = ({onSelect}) => {
+    // TODO: Finir le back et que tout fonctionne et que cela ajoute un évènement
     const navigation = useNavigation();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -97,6 +98,7 @@ const CreateEvent = ({onSelect}) => {
                         value={date}/>
                         {/* faire la vérification de l'affichage des tags */}
                     <Picker
+                        onPress={handleAlltags}
                         style={styles.tagInput}
                         onValueChange={value => setTags(value)}
                         items={tags.map(tag => ({ label: tag.name, value: tag.id }))}

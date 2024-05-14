@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ImageBackground, ScrollView, TouchableOpacity, 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const EventDetailScreen = ({ route, navigation }) => {
-  // Récupérer les informations de l'événement depuis la route
+  // TODO: Récupérer les informations de l'événement depuis la route et faire le back
     const title = 'Soirée des diplômés';
     const date = '15 Mars 2023';
     const time = '20h00';

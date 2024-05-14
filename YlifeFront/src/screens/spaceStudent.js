@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
 
 const SpaceStudent = () => {
+    // TODO: Récupérer les événements depuis l'API et faire le back
+    // TODO: faire le front
     const navigation = useNavigation();
     const [events, setEvents] = useState([
         {

@@ -13,6 +13,8 @@ const HomeScreen = () => {
     const [filter, setFilter] = useState('all');
     const [events, setEvents] = useState([
 
+    // TODO: Récupérer les événements depuis l'API et faire le back
+
     // const handleAllEvents = async () => {
     //   try{
     //     const response = await fetch(`http://10.0.2.2:3000/events/)`);

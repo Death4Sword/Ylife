@@ -4,6 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 
 function RegisterScreen() {
+  // TODO : Finaliser le register avec le password hashé en back
   // Creation of student
   const navigation = useNavigation();
   const [filiere, setFiliere] = useState('');

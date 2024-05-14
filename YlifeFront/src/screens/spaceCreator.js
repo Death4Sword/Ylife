@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
 
 const SpaceCreator = () => {
+    // TODO: Faire le back
+    // TODO: Faire le front
     const navigation = useNavigation();
     const [events, setEvents] = useState([
         {
