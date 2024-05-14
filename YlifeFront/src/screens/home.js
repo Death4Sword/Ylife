@@ -5,8 +5,6 @@ import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from "react-native-gesture-handler";
 
-// import header from './header';
-
 const HomeScreen = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');

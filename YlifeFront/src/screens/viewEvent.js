@@ -55,10 +55,12 @@ const ViewEvent = () => {
     const handleCreateEvent = () => {
         navigation.navigate('createEvent');
     };
-    
-    return (
-        <ScrollView>
-            {creator != 'Etudiant' ? (
+
+    if (creator == 'Etudiant') {
+        navigation.navigate('spaceStudent');
+    }else{
+        return(
+            <ScrollView>
                 <View style={styles.creatorContainer}>
                     <Text>Evenement</Text>
                 <View style={styles.gestionEventStudent}>
@@ -78,18 +80,11 @@ const ViewEvent = () => {
                     <Text>Soumettre un événement</Text>
                 </TouchableOpacity>
                 </View>
-            ) : (
-                <View style={styles.container}>
-                    <Text style={styles.title}>Soirée des diplômés</Text>
-                    <Text style={styles.eventDate}>15 Mars 2023</Text>
-                    <Text style={styles.eventLocation}>Péniche</Text>
-                    <Text style={styles.eventPrice}>Gratuit</Text>
-                    <Text style={styles.eventContact}>Contact : BDE</Text>
-                    <Text style={styles.eventDescription}></Text>
-                </View>
-            )}
-        </ScrollView>
-    );
+            </ScrollView>
+        )
+    }
+
+
 };
 
 const styles = StyleSheet.create({

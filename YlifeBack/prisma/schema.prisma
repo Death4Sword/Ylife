@@ -14,11 +14,14 @@ model Event {
   dateEvent      DateTime @db.Date
   photo_video    String   @db.VarChar(255)
   lieux          String   @db.VarChar(255)
-  tags           String   @db.VarChar(255)
   nbrParticipant Int
   price          Int
   lienPriceURL   String   @db.VarChar(255)
-  compte         Compte  @relation(fields: [idEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
+  compte         Compte  @relation(fields: [idCompte], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
+  idCompte       Int
+  tag            Tags @relation(fields: [idTag], references: [idTag], onDelete: NoAction, onUpdate: NoAction)
+  idTag          Int[]
+  participant    ParticipantEvent[]
 }
 
 model Compte {
@@ -30,7 +33,7 @@ model Compte {
   typeAsso      String        @db.VarChar(255)
   event         Event[]
   password      Password?
-  creatorEvent  CreatorEvent[]
+  participant   ParticipantEvent[]
 }
 
 model Password {
@@ -39,9 +42,16 @@ model Password {
   compte     Compte @relation(fields: [idPassword], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
 }
 
-model CreatorEvent {
-  idCreatorEvent Int    @id @default(autoincrement())
-  color          String @db.VarChar(255)
-  logo           String @db.VarChar(255)
-  Compte         Compte @relation(fields: [idCreatorEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
+model ParticipantEvent {
+  idParticipation Int    @id @default(autoincrement())
+  event           Event  @relation(fields: [idEvent], references: [idEvent], onDelete: NoAction, onUpdate: NoAction)
+  idEvent         Int
+  compte        Compte @relation(fields: [idCompteCreator], references: [idCompte], onDelete: NoAction, onUpdate: NoAction)
+  idCompteCreator      Int
+}
+
+model Tags {
+  idTag Int @id @default(autoincrement())
+  nomTag   String @db.VarChar(255)
+  event    Event[]
 }
