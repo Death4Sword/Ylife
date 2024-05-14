@@ -20,7 +20,7 @@ model Event {
   compte         Compte  @relation(fields: [idCompte], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
   idCompte       Int
   tag            Tags @relation(fields: [idTag], references: [idTag], onDelete: NoAction, onUpdate: NoAction)
-  idTag          Int[]
+  idTag          Int
   participant    ParticipantEvent[]
 }
 

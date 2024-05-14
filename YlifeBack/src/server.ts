@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import usersRouter from './routers/users.router';
-import eventsRouter from './routers/event.routers';
+import eventsRouter from './routers/event.router';
+import tagRouter from './routers/tag.router';
 import cors from 'cors';
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use('/users', usersRouter)
 app.use('/events', eventsRouter)
+app.use('/tag', tagRouter)
 
 // gestion des erreurs
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

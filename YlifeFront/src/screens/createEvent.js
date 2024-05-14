@@ -7,6 +7,7 @@ import Picker from "react-native-picker-select";
 
 const CreateEvent = ({onSelect}) => {
     // TODO: Finir le back et que tout fonctionne et que cela ajoute un évènement
+    // TODO: faire le front
     const navigation = useNavigation();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -21,7 +22,7 @@ const CreateEvent = ({onSelect}) => {
 
     const handleCreateEvent = async () => {
         try{
-            const response = await fetch(`http://10.0.2.2:3000/event/`, {
+            const response = await fetch(`http://10.0.2.2:3000/events/addEvent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ const CreateEvent = ({onSelect}) => {
                         placeholder="Date de l'évènement" 
                         onChangeText={text => setDate(text)}
                         value={date}/>
-                        {/* faire la vérification de l'affichage des tags */}
+                        {/* TODO: faire la vérification de l'affichage des tags depuis la BDD */}
                     <Picker
                         onPress={handleAlltags}
                         style={styles.tagInput}
