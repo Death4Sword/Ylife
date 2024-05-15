@@ -51,7 +51,7 @@ const CreateEvent = ({onSelect}) => {
 
     const handleAlltags = async () => {
         try{
-            const response = await fetch(`http://10.0.2.2:3000/tag/`);
+            const response = await fetch(`http://10.0.2.2:3000/tags/`);
             if (!response.ok) {
                 throw new Error('Network was not ok');
             }

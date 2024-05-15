@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use('/users', usersRouter)
 app.use('/events', eventsRouter)
-app.use('/tag', tagRouter)
+app.use('/tags', tagRouter)
 
 // gestion des erreurs
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

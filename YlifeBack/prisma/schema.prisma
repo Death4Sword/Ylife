@@ -17,8 +17,7 @@ model Event {
   nbrParticipant Int
   price          Int
   lienPriceURL   String   @db.VarChar(255)
-  compte         Compte  @relation(fields: [idCompte], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
-  idCompte       Int
+  compte         Compte  @relation(fields: [idEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
   tag            Tags @relation(fields: [idTag], references: [idTag], onDelete: NoAction, onUpdate: NoAction)
   idTag          Int
   participant    ParticipantEvent[]

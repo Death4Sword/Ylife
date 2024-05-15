@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import prisma from "../services/prisma.service";
-import { connect } from "http2";
 
 export const getAllEvent: RequestHandler = async(req, res) => {
     const result = 
@@ -26,7 +25,6 @@ export const postEvent: RequestHandler = async(req, res) => {
                 price: Number(price),
                 lienPriceURL: String(lienPriceURL),
                 idTag: Number(tag),
-                idCompte: Number(idCompte)
             }
         });
         res.send(result);
