@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import Picker from "react-native-picker-select";
+import RNPickerSelect from 'react-native-picker-select';
 
 
-const CreateEvent = ({onSelect}) => {
+const CreateEvent = () => {
     // TODO: Finir le back et que tout fonctionne et que cela ajoute un évènement
     // TODO: faire le front
     const navigation = useNavigation();
@@ -16,13 +16,14 @@ const CreateEvent = ({onSelect}) => {
     const [date, setDate] = useState('');
     const [price, setPrice] = useState('0');
     const [tags, setTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
     const [urlPrice, setUrlPrice] = useState('');
 
     const [selectedOption, setSelectedOption] = useState('');
 
     const handleCreateEvent = async () => {
         try{
-            const response = await fetch(`http://10.0.2.2:3000/events/addEvent`, {
+            const response = await fetch(`http://192.168.1.54:3000/events/addEvent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +33,7 @@ const CreateEvent = ({onSelect}) => {
                     description: description,
                     date: date,
                     location: location,
-                    tags: tags,
+                    tags: selectedTags,
                     places: places,
                     price: price,
                     urlPrice: urlPrice,
@@ -49,22 +50,26 @@ const CreateEvent = ({onSelect}) => {
         }
     };
 
-    const handleAlltags = async () => {
-        try{
-            const response = await fetch(`http://10.0.2.2:3000/tags/`);
-            if (!response.ok) {
-                throw new Error('Network was not ok');
+
+    useEffect(() => {
+        const handleAlltags = async () => {
+            try{
+                const response = await fetch(`http://192.168.1.54:3000/tags/`);
+                if (!response.ok) {
+                    throw new Error('Network was not ok');
+                }
+                const data = await response.json();
+                setTags(data);
+                console.log(data, "Tags fetched succesfully!");
+            } catch (error) {
+                console.error('Error fetching tags', error);
             }
-            const data = await response.json();
-            console.log(data, "Tags fetched succesfully!");
-        } catch (error) {
-            console.error('Error fetching tags', error);
-        }
-    };
+        };
+        handleAlltags();
+    }, []);
 
     const handleSelectOption = option => {
         setSelectedOption(option);
-        onSelect(option);
     };
 
     return (
@@ -97,15 +102,27 @@ const CreateEvent = ({onSelect}) => {
                         placeholder="Date de l'évènement" 
                         onChangeText={text => setDate(text)}
                         value={date}/>
-                        {/* TODO: faire la vérification de l'affichage des tags depuis la BDD */}
-                    <Picker
-                        onPress={handleAlltags}
-                        style={styles.tagInput}
-                        onValueChange={value => setTags(value)}
-                        items={tags.map(tag => ({ label: tag.name, value: tag.id }))}
-                        placeholder={{ label: 'Sélectionner un/ou plusieurs tags', value: null }}
-                        multiple={true}
-                    />
+                        {tags.length > 0 ? (
+                <RNPickerSelect
+                    style={styles.CreateEventInput}
+                    onValueChange={(value) => {
+                        if (!selectedTags.includes(value)) {
+                            setSelectedTags([...selectedTags, value]);
+                        } else {
+                            setSelectedTags(selectedTags.filter(tag => tag !== value));
+                        }
+                    }}
+                    items={tags.filter(tag => tag.idTag).map(tag => ({
+                        label: tag.nomTag,
+                        value: tag.idTag,
+                    }))}
+                    placeholder={{ label: 'Sélectionner un/ou plusieurs tags', value: null }}
+                    multiple={true}
+                    value={selectedTags}
+                />
+            ) : (
+                <Text>Loading...</Text>
+            )}
                     <Text>L'évènement est-il payant</Text>
                     {/* bouton radio de sélection si sélectionner oui alors affiche un textinput */}
                     <View style={styles.radioButtonContainer}>

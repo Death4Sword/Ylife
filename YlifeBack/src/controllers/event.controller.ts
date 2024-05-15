@@ -12,19 +12,31 @@ export const getAllEvent: RequestHandler = async(req, res) => {
 }
 
 export const postEvent: RequestHandler = async(req, res) => {
-    const { title, description, dateEvent, lieux, photo_video, nbrParticipant, price, lienPriceURL, tag, idCompte } = req.body;
+    const { title, description, date, lieux, photo_video, nbrParticipant, price, lienPriceURL, tags } = req.body;
     try{
+
+        if (!date) {
+            throw new Error('dateEvent is required');
+        }
+
+        // Vérifier si la date est valide
+        const parsedDateEvent = new Date(date);
+        if (isNaN(parsedDateEvent.getTime())) {
+            throw new Error('Invalid dateEvent');
+        }
+
         const result = await prisma.event.create({
             data: {
                 title: String(title),
                 description: String(description),
-                dateEvent: new Date(dateEvent).toISOString().slice(0, 19).replace('T', ' '),
+                dateEvent: parsedDateEvent,
                 photo_video: String(photo_video),
                 lieux: String(lieux),
                 nbrParticipant: Number(nbrParticipant),
                 price: Number(price),
                 lienPriceURL: String(lienPriceURL),
-                idTag: Number(tag),
+                idTag: Number(tags),
+                tag: { connect: { idTag: Number(tags) }}
             }
         });
         res.send(result);
