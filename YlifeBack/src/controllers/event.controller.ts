@@ -12,9 +12,8 @@ export const getAllEvent: RequestHandler = async(req, res) => {
 }
 
 export const postEvent: RequestHandler = async(req, res) => {
-    const { title, description, date, lieux, photo_video, nbrParticipant, price, lienPriceURL, tags } = req.body;
+    const { title, description, date, location, photo_video, places, price, urlPrice, tags } = req.body;
     try{
-
         if (!date) {
             throw new Error('dateEvent is required');
         }
@@ -25,23 +24,43 @@ export const postEvent: RequestHandler = async(req, res) => {
             throw new Error('Invalid dateEvent');
         }
 
+        console.log(tags);
+        // Assurez-vous que tags est un tableau
+        if (!Array.isArray(tags)) {
+            return res.status(400).send('tags must be an array');
+        }
+
+        
+        // Vérifiez que les tags existent dans la base de données
+        for (const tagId of tags) {
+            const tagExists = await prisma.tags.findUnique({ where: { idTag: tagId } });
+            if (!tagExists) {
+                return res.status(400).send(`Tag with id ${tagId} does not exist`);
+            }
+        }
+
         const result = await prisma.event.create({
-            data: {
-                title: String(title),
-                description: String(description),
+            data:{
+                title: title,
+                description: description,
                 dateEvent: parsedDateEvent,
-                photo_video: String(photo_video),
-                lieux: String(lieux),
-                nbrParticipant: Number(nbrParticipant),
-                price: Number(price),
-                lienPriceURL: String(lienPriceURL),
-                idTag: Number(tags),
-                tag: { connect: { idTag: Number(tags) }}
+                photo_video: photo_video,
+                lieux: location,
+                nbrParticipant: places,
+                price: price,
+                lienPriceURL: urlPrice,
+                tags: {
+                    create: tags.map((tagId: number) => ({
+                        tag: { connect: { idTag: tagId } }
+                    }))
+                }
+            },
+            include: {
+                tags: true
             }
         });
         res.send(result);
     } catch (error) {
-        console.error('Error creating event ', error);
         res.status(500).send('Erreur interne');
     }
 }

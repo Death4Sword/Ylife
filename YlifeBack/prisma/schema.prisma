@@ -8,31 +8,30 @@ datasource db {
 }
 
 model Event {
-  idEvent        Int      @id @default(autoincrement())
-  title          String   @db.VarChar(255)
-  description    String   @db.VarChar(255)
-  dateEvent      DateTime @db.Date
-  photo_video    String   @db.VarChar(255)
-  lieux          String   @db.VarChar(255)
+  idEvent        Int                @id @default(autoincrement())
+  title          String             @db.VarChar(255)
+  description    String             @db.VarChar(255)
+  dateEvent      DateTime           @db.Date
+  photo_video    String             @db.VarChar(255)
+  lieux          String             @db.VarChar(255)
   nbrParticipant Int
   price          Int
-  lienPriceURL   String   @db.VarChar(255)
-  compte         Compte  @relation(fields: [idEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
-  tag            Tags @relation(fields: [idTag], references: [idTag], onDelete: NoAction, onUpdate: NoAction)
-  idTag          Int
+  lienPriceURL   String             @db.VarChar(255)
+  tags           EventTag[]
+  compte         Compte             @relation(fields: [idEvent], references: [idCompte], onDelete: NoAction, onUpdate: NoAction, map: "idCompte")
   participant    ParticipantEvent[]
 }
 
 model Compte {
-  idCompte      Int           @id @default(autoincrement())
-  filiere       String        @db.VarChar(100)
-  mail          String        @db.VarChar(255)
-  nom           String        @db.VarChar(255)
-  prenom        String        @db.VarChar(255)
-  typeAsso      String        @db.VarChar(255)
-  event         Event[]
-  password      Password?
-  participant   ParticipantEvent[]
+  idCompte    Int                @id @default(autoincrement())
+  filiere     String             @db.VarChar(100)
+  mail        String             @db.VarChar(255)
+  nom         String             @db.VarChar(255)
+  prenom      String             @db.VarChar(255)
+  typeAsso    String             @db.VarChar(255)
+  event       Event?
+  participant ParticipantEvent[]
+  password    Password?
 }
 
 model Password {
@@ -43,14 +42,23 @@ model Password {
 
 model ParticipantEvent {
   idParticipation Int    @id @default(autoincrement())
-  event           Event  @relation(fields: [idEvent], references: [idEvent], onDelete: NoAction, onUpdate: NoAction)
   idEvent         Int
-  compte        Compte @relation(fields: [idCompteCreator], references: [idCompte], onDelete: NoAction, onUpdate: NoAction)
-  idCompteCreator      Int
+  idCompteCreator Int
+  compte          Compte @relation(fields: [idCompteCreator], references: [idCompte], onDelete: NoAction, onUpdate: NoAction)
+  event           Event  @relation(fields: [idEvent], references: [idEvent], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Tags {
-  idTag Int @id @default(autoincrement())
-  nomTag   String @db.VarChar(255)
-  event    Event[]
+  idTag  Int    @id @default(autoincrement())
+  nomTag String @db.VarChar(255)
+  events  EventTag[]
+}
+
+model EventTag {
+  id        Int    @id @default(autoincrement())
+  eventId   Int
+  tagId     Int
+  event     Event  @relation(fields: [eventId], references: [idEvent], onDelete: Cascade)
+  tag       Tags   @relation(fields: [tagId], references: [idTag], onDelete: Cascade)
+  @@unique([eventId, tagId])
 }

@@ -14,7 +14,7 @@ const CreateEvent = () => {
     const [location, setLocation] = useState('');
     const [places, setPlaces] = useState('');
     const [date, setDate] = useState('');
-    const [price, setPrice] = useState('0');
+    const [price, setPrice] = useState(0);
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
     const [urlPrice, setUrlPrice] = useState('');
@@ -23,7 +23,7 @@ const CreateEvent = () => {
 
     const handleCreateEvent = async () => {
         try{
-            const response = await fetch(`http://192.168.1.54:3000/events/addEvent`, {
+            const response = await fetch(`http://192.168.1.80:3000/events/addEvent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,6 +31,7 @@ const CreateEvent = () => {
                 body: JSON.stringify({
                     title: title,
                     description: description,
+                    photo_video: 'https://www.youtube.com/watch?v=3JZ_D3ELwOQ',
                     date: date,
                     location: location,
                     tags: selectedTags,
@@ -54,7 +55,7 @@ const CreateEvent = () => {
     useEffect(() => {
         const handleAlltags = async () => {
             try{
-                const response = await fetch(`http://192.168.1.54:3000/tags/`);
+                const response = await fetch(`http://192.168.1.80:3000/tags/`);
                 if (!response.ok) {
                     throw new Error('Network was not ok');
                 }
@@ -70,6 +71,14 @@ const CreateEvent = () => {
 
     const handleSelectOption = option => {
         setSelectedOption(option);
+    };
+
+    const handleTagChange = (value) => {
+        if (selectedTags.includes(value)) {
+            setSelectedTags(selectedTags.filter(tag => tag !== value));
+        } else {
+            setSelectedTags([...selectedTags, value]);
+        }
     };
 
     return (
@@ -93,33 +102,27 @@ const CreateEvent = () => {
                         onChangeText={text=> setLocation(text)}
                         value={location}/>
                     <Text>Nombre de places</Text>
+                    
                     <TextInput style={styles.CreateEventInput} 
                         placeholder="Nombre de places" 
-                        onChangeText={text => setPlaces(text)}
-                        value={places}/>
+                        onChangeText={text => setPlaces(parseInt(text))}
+                        value={places.toString()}/>
                     <Text style={styles.CreateEventDate}>Date de l'évènement</Text>
                     <TextInput style={styles.CreateEventInput} 
                         placeholder="Date de l'évènement" 
                         onChangeText={text => setDate(text)}
                         value={date}/>
                         {tags.length > 0 ? (
-                <RNPickerSelect
-                    style={styles.CreateEventInput}
-                    onValueChange={(value) => {
-                        if (!selectedTags.includes(value)) {
-                            setSelectedTags([...selectedTags, value]);
-                        } else {
-                            setSelectedTags(selectedTags.filter(tag => tag !== value));
-                        }
-                    }}
-                    items={tags.filter(tag => tag.idTag).map(tag => ({
-                        label: tag.nomTag,
-                        value: tag.idTag,
-                    }))}
-                    placeholder={{ label: 'Sélectionner un/ou plusieurs tags', value: null }}
-                    multiple={true}
-                    value={selectedTags}
-                />
+                    <RNPickerSelect
+                        style={styles.CreateEventInput}
+                        onValueChange={handleTagChange}
+                        items={tags.filter(tag => tag.idTag).map(tag => ({
+                            label: tag.nomTag,
+                            value: tag.idTag,
+                        }))}
+                        placeholder={{ label: 'Sélectionner un tag', value: null }}
+                        value={selectedTags}
+                    />
             ) : (
                 <Text>Loading...</Text>
             )}
@@ -150,14 +153,14 @@ const CreateEvent = () => {
                             <TextInput
                             placeholder="Montant"
                             style={styles.input}
-                            onChangeText={text => setPrice(text)}
+                            onChangeText={text => setPrice(parseInt(text))}
                             value={price} />
                             <Text style={styles.conatinerUrl}>Lien du paiement</Text>
                             <TextInput 
                                 placeholder="Lien de paiement"
                                 style={styles.input}
                                 onChangeText={text => setUrlPrice(text)}
-                                value={urlPrice}/>
+                                value={urlPrice.toString()}/>
                             </>                      
                     )}
                 </View>
