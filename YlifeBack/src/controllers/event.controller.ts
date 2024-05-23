@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import prisma from "../services/prisma.service";
+import { log } from "console";
 
 export const getAllEvent: RequestHandler = async(req, res) => {
     const result = 
@@ -64,3 +65,21 @@ export const postEvent: RequestHandler = async(req, res) => {
         res.status(500).send('Erreur interne');
     }
 }
+
+export const getEventsByAccount: RequestHandler = async (req, res) => {
+    const { idCompte } = req.params;
+    console.log(idCompte);
+    try {
+        const events = await prisma.event.findMany({
+            where: {
+                compte: {
+                    idCompte: parseInt(idCompte)
+                }
+            }
+        });
+        res.json(events);
+    } catch (error) {
+        console.error('Error retrieving events for account', error);
+        res.status(500).send('Internal server error');
+    }
+};

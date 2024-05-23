@@ -23,7 +23,7 @@ const CreateEvent = () => {
 
     const handleCreateEvent = async () => {
         try{
-            const response = await fetch(`http://192.168.1.80:3000/events/addEvent`, {
+            const response = await fetch(`http://10.92.2.40:3000/events/addEvent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const CreateEvent = () => {
     useEffect(() => {
         const handleAlltags = async () => {
             try{
-                const response = await fetch(`http://192.168.1.80:3000/tags/`);
+                const response = await fetch(`http://10.92.2.40:3000/tags/`);
                 if (!response.ok) {
                     throw new Error('Network was not ok');
                 }
@@ -127,7 +127,6 @@ const CreateEvent = () => {
                 <Text>Loading...</Text>
             )}
                     <Text>L'évènement est-il payant</Text>
-                    {/* bouton radio de sélection si sélectionner oui alors affiche un textinput */}
                     <View style={styles.radioButtonContainer}>
                     <TouchableOpacity
                     style={[

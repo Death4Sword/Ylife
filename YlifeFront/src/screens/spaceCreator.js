@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -7,43 +7,24 @@ const SpaceCreator = () => {
     // TODO: Faire le back
     // TODO: Faire le front
     const navigation = useNavigation();
-    const [events, setEvents] = useState([
-        {
-        id: 1,
-        date: '15 Mars 2023',
-        title: 'Soirée des diplômés',
-        description: 'En attendant le WED, le BDE invite à une soirée sur une péniche où nous nous occupons de tout !',
-        creator: 'BDE',
-        },
-        {
-        id: 2,
-        date: '16 Mars 2023',
-        title: 'LoL Ynov Cup',
-        description: 'Venez participer à la nouvelle édition de la LoL Ynov Cup. Un tournoi organisé par le BDS Esp...',
-        creator: 'BDS',
-        },
-        {
-        id: 3,
-        date: '23 Mars 2023',
-        title: 'Olympiades',
-        description: 'Participez à une journée sportive avec les olympiades !',
-        creator: 'BDS',
-        },
-        {
-        id: 4,
-        date: '15 Mars 2023',
-        title: 'Soirée des diplômés',
-        description: 'En attendant le WED, le BDE invite à une soirée sur une péniche où nous nous occupons de tout !',
-        creator: 'BDE',
-        },
-        {
-        id: 5,
-        date: '16 Mars 2023',
-        title: 'LoL Ynov Cup',
-        description: 'Venez participer à la nouvelle édition de la LoL Ynov Cup. Un tournoi organisé par le BDS Esp...',
-        creator: 'BDS',
-        },
-    ]);
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        const handleEventCreator = async () => {
+            try{
+                const response = await fetch(`http://10.92.2.40:3000/events/getEventbyAccount`);
+                if (!response.ok) {
+                    throw new Error('Network was not ok');
+                }
+                const data = await response.json();
+                setEvents(data);
+                console.log(data, "event fetched succesfully!");
+            } catch (error) {
+                console.error('Error fetching event', error);
+            }
+        };
+        handleEventCreator();
+    }, []);
 
     return (
         <ScrollView>

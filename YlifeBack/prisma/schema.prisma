@@ -29,7 +29,7 @@ model Compte {
   nom         String             @db.VarChar(255)
   prenom      String             @db.VarChar(255)
   typeAsso    String             @db.VarChar(255)
-  event       Event?
+  event       Event[]
   participant ParticipantEvent[]
   password    Password?
 }
